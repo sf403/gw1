@@ -1,9 +1,9 @@
 package com.group5.gw1.model;
 
 public class RouteInfo {
-    public double distanceKm;
-    public int travelTimeMin;
-    public boolean isValid;
+    private double distanceKm;
+    private int travelTimeMin;
+    private boolean isValid;
 
     public RouteInfo(double distanceKm, int travelTimeMin, boolean isValid) {
         this.distanceKm = distanceKm;

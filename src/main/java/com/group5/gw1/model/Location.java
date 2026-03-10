@@ -1,8 +1,8 @@
 package com.group5.gw1.model;
 
 public class Location {
-    public double lat;
-    public double lon;
+    private double lat;
+    private double lon;
 
     public Location(double lon, double lat) {
         this.lon = lon;
