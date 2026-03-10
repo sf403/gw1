@@ -10,9 +10,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-// TODO-4: Get rid of this file entirely by moving relevant pieces of code into `client.TomTomClient`
+// TODO-4(Jacky): Get rid of this file entirely by moving relevant pieces of code into `client.TomTomClient`
 public class Tomtom {
-    public static RouteInfo getRouteInfo(Location origin, Location destination) throws IOException, InterruptedException{
+    public static RouteInfo getRouteInfo(Location origin, Location destination) throws IOException, InterruptedException {
         String api_key = "";
         String uri = "https://api.tomtom.com/routing/1/calculateRoute/" +
                 origin.toString() +
@@ -21,10 +21,10 @@ public class Tomtom {
                 "/json?key=" +
                 api_key;
 
-        
+
         System.out.println("uri: " + uri);
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(uri)).build();
-        try{
+        try {
             HttpClient client = HttpClient.newBuilder().build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println(response.body());
@@ -32,8 +32,8 @@ public class Tomtom {
             JSONObject json = new JSONObject(response.body());
             System.out.println(json.toString());
             JSONObject summary = json.getJSONArray("routes")
-                                        .getJSONObject(0)
-                                        .getJSONObject("summary");
+                    .getJSONObject(0)
+                    .getJSONObject("summary");
             double lengthKm = (double) summary.getInt("lengthInMeters") / 1000;
 //            not sure about this, it might be worth changing later
             int travelTimeMin = summary.getInt("travelTimeInSeconds") / 60;
