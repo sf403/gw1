@@ -1,8 +1,8 @@
 package com.group5.gw1;
 
+import com.group5.gw1.model.Location;
+import com.group5.gw1.model.RouteInfo;
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URI;
