@@ -10,6 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+// TODO-4: Get rid of this file entirely by moving relevant pieces of code into `client.TomTomClient`
 public class Tomtom {
     public static RouteInfo getRouteInfo(Location origin, Location destination) throws IOException, InterruptedException{
         String api_key = "";
