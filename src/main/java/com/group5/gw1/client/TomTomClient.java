@@ -19,9 +19,6 @@ import org.springframework.web.client.RestClient;
 
 @Service
 public class TomTomClient {
-    // TODO-4a(Jacky): implement this method by moving code from `Tomtom` class here, create package similar to TODO-3
-    //  and implement this
-    
     private final RestClient restClient;
 
     public TomTomClient() throws JsonProcessingException {
@@ -31,8 +28,6 @@ public class TomTomClient {
     }
     
 
-    // use this page to get information on how to work with jsons in springboot:
-    // https://docs.spring.io/spring-boot/reference/features/json.html
     RouteInfo calculateRoute(Location origin, Location destination) throws JsonProcessingException {
         String response = this.restClient.get().uri("/{origin.uriString()}:{destination.uriString()}/json?key=Jlgx8XukPhzgG2mSvOv5qsHLs3Oui97X",
             origin.uriString(),
