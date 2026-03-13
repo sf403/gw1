@@ -8,6 +8,10 @@ public class Location {
     private double lat;
     private double lon;
 
+    public String uriString(){
+        return lat + "," + lon;
+    }
+
     @Override
     public String toString() {
         return "Location (" + lat + ", " + lon + ')';
