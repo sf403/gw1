@@ -31,4 +31,12 @@ public class RouteInfo {
                 ", isValid=" + isValid +
                 '}';
     }
+
+    public double getDistanceKm() {
+        return distanceKm;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
 }

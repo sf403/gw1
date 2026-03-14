@@ -5,4 +5,8 @@ public class ResourceSource {
     private String name;
     private ResourceType type;
     private Location position;
+
+    public Location getPosition() {
+        return position;
+    }
 }
