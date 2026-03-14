@@ -13,6 +13,14 @@ public class Location {
         return lat + "," + lon;
     }
 
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
     @Override
     public String toString() {
         return "Location (" + lat + ", " + lon + ')';
