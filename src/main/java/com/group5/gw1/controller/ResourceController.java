@@ -15,10 +15,8 @@ public class ResourceController {
     @Autowired
     private ResourceRankingService resourceRankingService;
 
-    // TODO-2(Faizan): this is the send main point of entry of the application after the `main` method in
-    //  `Gw1Application` this is where we start to follow the sequence diagram.
     @PostMapping
     public RankedResourceResult getRankedResources(@RequestBody ResourceRequest request) {
-        throw new UnsupportedOperationException("Unimplemented");
+        return resourceRankingService.findNearbyResources(request);
     }
 }
