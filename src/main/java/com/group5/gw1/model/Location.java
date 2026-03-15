@@ -1,7 +1,9 @@
 package com.group5.gw1.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public class Location {
 
@@ -10,14 +12,6 @@ public class Location {
 
     public String uriString(){
         return lat + "," + lon;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLon() {
-        return lon;
     }
 
     @Override
