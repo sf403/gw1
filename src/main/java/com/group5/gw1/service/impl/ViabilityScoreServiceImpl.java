@@ -14,14 +14,10 @@ public class ViabilityScoreServiceImpl implements ViabilityScoreService {
      */
     @Override
     public ViabilityScore calculateViabilityScore(RouteInfo routeInfo, WeatherData weatherData) {
-        ViabilityScore score = new ViabilityScore();
-
         // 2. Safety Override Logic
         // If flood warning exists, score must be 0.0
         if (weatherData != null && weatherData.isFloodWarning()) {
-            score.setTotalScore(0.0);
-            score.setWeatherSafetyScore(0.0);
-            return score;
+            return new ViabilityScore(0.0, 0.0, 0.0, 0.0);
         }
 
         // 3. Sub-score calculations
@@ -36,11 +32,6 @@ public class ViabilityScoreServiceImpl implements ViabilityScoreService {
         // 4. Final aggregation
         double total = (proximity + accessibility + weatherSafety) / 3.0;
 
-        score.setProximityScore(proximity);
-        score.setAccessibilityScore(accessibility);
-        score.setWeatherSafetyScore(weatherSafety);
-        score.setTotalScore(total);
-
-        return score;
+        return new ViabilityScore(total, proximity, accessibility, weatherSafety);
     }
 }
