@@ -10,4 +10,22 @@ import com.group5.gw1.model.ResourceType;
 public class ResourceRequest {
     private ResourceType type;
     private Location location;
+
+    // Getters
+    public ResourceType getType() {
+        return type;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    // Setters (for JSON deserialization)
+    public void setType(ResourceType type) {
+        this.type = type;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }
