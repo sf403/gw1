@@ -3,12 +3,9 @@ package com.group5.gw1.controller;
 import com.group5.gw1.client.GiveFookUkClient;
 import com.group5.gw1.client.OpenMeteoClient;
 import com.group5.gw1.client.TomTomClient;
+import com.group5.gw1.dto.RankedResourceResult;
 import com.group5.gw1.dto.ResourceRequest;
-import com.group5.gw1.model.ResourceSource;
-import com.group5.gw1.model.RouteInfo;
-import com.group5.gw1.model.ViabilityScore;
-import com.group5.gw1.model.WeatherData;
-import com.group5.gw1.model.WeatherRisk;
+import com.group5.gw1.model.*;
 import com.group5.gw1.service.ViabilityScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,10 +36,10 @@ public class ResourceController {
     private ViabilityScoreService viabilityScoreService;
 
     @PostMapping
-    public List<ResourceSource> getRankedResources(@RequestBody ResourceRequest request) {
+    public RankedResourceResult getRankedResources(@RequestBody ResourceRequest request) {
+        List<ResourceSource> resources = new java.util.ArrayList<>(
+                giveFoodUkClient.findNearbyResource(request.getType(), request.getLocation()));
 
-        List<ResourceSource> resources = giveFoodUkClient.findNearbyResource(request.getType(), request.getLocation());
-        
         // Map to keep track of calculated viability scores for each source
         Map<ResourceSource, ViabilityScore> scoresList = new HashMap<>();
 
@@ -50,15 +47,17 @@ public class ResourceController {
             try {
                 // 1. Get Route
                 RouteInfo routeInfo = tomTomClient.calculateRoute(request.getLocation(), source.getPosition());
-                
+
                 // 2. Get Weather Risk
-                // Assuming we use source position or route coordinate based on the sequence diagram.
+                // Assuming we use source position or route coordinate based on the sequence
+                // diagram.
                 WeatherRisk weatherRisk = openMeteoClient.getWeatherRisk(source.getPosition());
 
                 // 3. Map WeatherRisk to WeatherData because the service expects WeatherData
                 WeatherData weatherData = new WeatherData();
                 weatherData.setFloodWarning(weatherRisk != null && weatherRisk.getFloodRisk() > 0.5);
-                weatherData.setDroughtIndex(weatherRisk != null && weatherRisk.getHistoricalData() != null ? 5.0 : 0.0); // Basic mapping
+                weatherData.setDroughtIndex(weatherRisk != null && weatherRisk.getHistoricalData() != null ? 5.0 : 0.0); // Basic
+                                                                                                                         // mapping
                 weatherData.setHasHistoricalData(weatherRisk != null && weatherRisk.getHistoricalData() != null);
                 weatherData.setTimestamp(LocalDateTime.now());
 
@@ -81,6 +80,19 @@ public class ResourceController {
             return Double.compare(total2, total1); // descending
         });
 
-        return resources;
+        // 6. Map sorted resources into RankedResource objects
+        List<RankedResource> rankedResources = new java.util.ArrayList<>();
+        for (int i = 0; i < resources.size(); i++) {
+            ResourceSource source = resources.get(i);
+            RankedResource ranked = new RankedResource();
+            ranked.setRank(i + 1);
+            ranked.setSource(source);
+            ranked.setScore(scoresList.get(source));
+            // Assuming route and weather details are held by the orchestrator mapping as
+            // previously done
+            rankedResources.add(ranked);
+        }
+
+        return new RankedResourceResult(rankedResources, request.getLocation(), request.getType(), LocalDateTime.now());
     }
 }
