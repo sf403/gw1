@@ -1,0 +1,99 @@
+{
+  "info": {
+    "_postman_id": "75c3f1ab-6242-4fdb-9b2f-927dc661d9a2",
+    "name": "GW1 Postman Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. [VALID] London, UK",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"type\": \"FOOD\",\n    \"location\": {\n        \"lat\": 51.528308,\n        \"lon\": -0.3817765\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/resources",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "resources"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. [INVALID - 404] Berlin, Germany (No Results)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"type\": \"FOOD\",\n    \"location\": {\n        \"lat\": 52.50931,\n        \"lon\": 13.42936\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/resources",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "resources"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. [INVALID - 400] No Location Provided",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"type\": \"FOOD\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/resources",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "resources"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
