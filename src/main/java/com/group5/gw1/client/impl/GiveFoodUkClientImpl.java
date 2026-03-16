@@ -7,15 +7,19 @@ import com.group5.gw1.client.GiveFookUkClient;
 import com.group5.gw1.model.Location;
 import com.group5.gw1.model.ResourceSource;
 import com.group5.gw1.model.ResourceType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class GiveFoodUkClientImpl implements GiveFookUkClient {
+    private static final Logger LOG = LoggerFactory.getLogger(GiveFoodUkClientImpl.class);
     private static final String BASE_URL = "https://www.givefood.org.uk/api/2";
 
     private final RestClient restClient;
@@ -28,7 +32,7 @@ public class GiveFoodUkClientImpl implements GiveFookUkClient {
 
     @Override
     public List<ResourceSource> findNearbyResource(ResourceType type, Location location) {
-        if (type != ResourceType.FOOD || location == null) {
+        if (type != ResourceType.FOOD || !isValidLocation(location)) {
             return List.of();
         }
 
@@ -67,9 +71,32 @@ public class GiveFoodUkClientImpl implements GiveFookUkClient {
             }
 
             return resources;
-        } catch (JsonProcessingException | RestClientException exception) {
+        } catch (RestClientResponseException response) {
+            int statusCode = response.getStatusCode() != null ? response.getStatusCode().value() : -1;
+            LOG.warn("GiveFood request failed (status={}): {}", statusCode, response.getResponseBodyAsString());
+            // GiveFood returns 400 for invalid coordinates (e.g. 0,0 or invalid format)
+            return List.of();
+        } catch (RestClientException exception) {
+            LOG.warn("Failed to fetch nearby food resources from GiveFood", exception);
+            return List.of();
+        } catch (JsonProcessingException exception) {
             throw new IllegalStateException("Failed to fetch nearby food resources from GiveFood", exception);
         }
+    }
+
+    private boolean isValidLocation(Location location) {
+        if (location == null) {
+            return false;
+        }
+
+        // GiveFood API returns 400 for invalid coordinates such as 0,0 or out-of-range values
+        double lat = location.getLat();
+        double lon = location.getLon();
+        if (lat == 0.0 && lon == 0.0) {
+            return false;
+        }
+
+        return lat >= -90.0 && lat <= 90.0 && lon >= -180.0 && lon <= 180.0;
     }
 
     private Location parseLocation(String latLng) {
