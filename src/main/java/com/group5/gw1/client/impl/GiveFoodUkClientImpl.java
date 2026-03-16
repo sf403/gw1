@@ -3,7 +3,7 @@ package com.group5.gw1.client.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.group5.gw1.client.GiveFookUkClient;
+import com.group5.gw1.client.FindResource;
 import com.group5.gw1.model.Location;
 import com.group5.gw1.model.ResourceSource;
 import com.group5.gw1.model.ResourceType;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GiveFoodUkClientImpl implements GiveFookUkClient {
+public class GiveFoodUkClientImpl implements FindResource {
     private static final Logger LOG = LoggerFactory.getLogger(GiveFoodUkClientImpl.class);
     private static final String BASE_URL = "https://www.givefood.org.uk/api/2";
 

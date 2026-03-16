@@ -1,9 +1,8 @@
 package com.group5.gw1.controller;
 
-import com.group5.gw1.client.GiveFookUkClient;
+import com.group5.gw1.client.FindResource;
 import com.group5.gw1.client.OpenMeteoClient;
 import com.group5.gw1.client.TomTomClient;
-import com.group5.gw1.dto.RankedResourceResult;
 import com.group5.gw1.dto.ResourceRequest;
 import com.group5.gw1.model.*;
 import com.group5.gw1.service.ViabilityScoreService;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -27,7 +25,7 @@ import java.util.HashMap;
 public class ResourceController {
 
     @Autowired
-    private GiveFookUkClient giveFoodUkClient;
+    private FindResource giveFoodUkClient;
 
     @Autowired
     private TomTomClient tomTomClient;
